@@ -267,30 +267,72 @@ export default function FeatureCapture() {
             Todavía no cargaste ninguna feature.
           </p>
         ) : (
-          <ul className="flex flex-col gap-2">
-            {features.map((feature) => (
-              <li
-                key={feature.id}
-                className="flex items-center justify-between rounded-lg border border-zinc-200 bg-white px-4 py-3 dark:border-zinc-800 dark:bg-zinc-900"
-              >
-                <div>
-                  <p className="font-medium text-zinc-900 dark:text-zinc-50">
-                    {feature.title}
+          <ul className="flex flex-col gap-3">
+            {features.map((feature) => {
+              const impactLabel = IMPACT_OPTIONS.find(
+                (option) => option.value === feature.impact,
+              )?.label;
+              const confidenceLabel = CONFIDENCE_OPTIONS.find(
+                (option) => option.value === feature.confidence,
+              )?.label;
+
+              return (
+                <li
+                  key={feature.id}
+                  className="flex flex-col gap-3 rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="font-medium text-zinc-900 dark:text-zinc-50">
+                        {feature.title}
+                      </p>
+                      <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                        {feature.category} · {feature.status}
+                      </p>
+                    </div>
+                    <span className="shrink-0 rounded-full bg-zinc-100 px-3 py-1 text-sm font-semibold text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200">
+                      {calculateRice(
+                        feature.reach,
+                        feature.impact,
+                        feature.confidence,
+                        feature.effort,
+                      ).toFixed(1)}
+                    </span>
+                  </div>
+
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                    {feature.description}
                   </p>
-                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                    {feature.category}
-                  </p>
-                </div>
-                <span className="rounded-full bg-zinc-100 px-3 py-1 text-sm font-semibold text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200">
-                  {calculateRice(
-                    feature.reach,
-                    feature.impact,
-                    feature.confidence,
-                    feature.effort,
-                  ).toFixed(1)}
-                </span>
-              </li>
-            ))}
+
+                  <dl className="grid grid-cols-2 gap-x-4 gap-y-1 border-t border-zinc-100 pt-3 text-sm dark:border-zinc-800 sm:grid-cols-4">
+                    <div>
+                      <dt className="text-zinc-500 dark:text-zinc-400">Reach</dt>
+                      <dd className="font-medium text-zinc-900 dark:text-zinc-50">
+                        {feature.reach}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-zinc-500 dark:text-zinc-400">Impact</dt>
+                      <dd className="font-medium text-zinc-900 dark:text-zinc-50">
+                        {impactLabel}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-zinc-500 dark:text-zinc-400">Confidence</dt>
+                      <dd className="font-medium text-zinc-900 dark:text-zinc-50">
+                        {confidenceLabel}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-zinc-500 dark:text-zinc-400">Effort</dt>
+                      <dd className="font-medium text-zinc-900 dark:text-zinc-50">
+                        {feature.effort}
+                      </dd>
+                    </div>
+                  </dl>
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>
